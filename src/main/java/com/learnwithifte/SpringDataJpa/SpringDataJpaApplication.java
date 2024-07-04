@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
@@ -20,15 +21,26 @@ public class SpringDataJpaApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(EmployeeRepository employeeRepository) {
 		return args->{
-			Sort sort = Sort.by("firstName")
-					.ascending()
-					.and(Sort.by("salary").descending());
-
-			employeeRepository.findAll(sort)
+			PageRequest pageReq = PageRequest.of(
+					0,
+					10,
+					Sort.by("id").ascending());
+			employeeRepository.findAll(pageReq)
 					.forEach(employee -> {
-						System.out.println(employee.getFirstName()+"-"+employee.getSalary());
+						System.out.println(employee);
 					});
 		};
+	}
+
+	private static void sorting(EmployeeRepository employeeRepository) {
+		Sort sort = Sort.by("firstName")
+				.ascending()
+				.and(Sort.by("salary").descending());
+
+		employeeRepository.findAll(sort)
+				.forEach(employee -> {
+					System.out.println(employee.getFirstName()+" "+employee.getSalary());
+				});
 	}
 
 	private static void generateEmployee(EmployeeRepository employeeRepository) {
