@@ -19,17 +19,57 @@ public class SpringDataJpaApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(EmployeeRepository employeeRepository) {
+	public CommandLineRunner commandLineRunner(
+			EmployeeRepository employeeRepository,
+			AddressRepository addressRepository) {
 		return args->{
-			PageRequest pageReq = PageRequest.of(
-					0,
-					10,
-					Sort.by("id").ascending());
-			employeeRepository.findAll(pageReq)
-					.forEach(employee -> {
-						System.out.println(employee);
-					});
+//			Faker faker = new Faker();
+//
+//			String firstName = faker.name().firstName();
+//			String lastName = faker.name().lastName();
+//			Employee employee = new Employee(
+//					firstName,
+//					lastName,
+//					firstName.toLowerCase()+"_"+lastName.toLowerCase()+"@learnwithiftekhar.com",
+//					LocalDate.of(
+//							faker.number().numberBetween(2018, 2024),
+//							faker.number().numberBetween(1, 12),
+//							faker.number().numberBetween(1, 28)),
+//					faker.number().randomDouble(2, 1000, 5000)
+//			);
+//
+//			Address address = new Address(
+//					faker.address().streetAddress(),
+//					faker.address().city(),
+//					faker.address().state(),
+//					faker.address().zipCode(),
+//					employee
+//			);
+//
+//			addressRepository.save(address);
+
+//			addressRepository.findAll()
+//					.forEach(System.out::println);
+
+			employeeRepository.findById(206L)
+							.ifPresent(System.out::println);
+			addressRepository.findById(1L)
+					.ifPresent(System.out::println);
+
+			employeeRepository.deleteById(206L);
+
 		};
+	}
+
+	private static void pagination(EmployeeRepository employeeRepository) {
+		PageRequest pageReq = PageRequest.of(
+				0,
+				10,
+				Sort.by("id").ascending());
+		employeeRepository.findAll(pageReq)
+				.forEach(employee -> {
+					System.out.println(employee);
+				});
 	}
 
 	private static void sorting(EmployeeRepository employeeRepository) {

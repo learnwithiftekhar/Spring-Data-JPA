@@ -64,6 +64,12 @@ public class Employee {
     )
     private double salary;
 
+    @OneToOne(
+            mappedBy = "employee",
+            orphanRemoval = true
+    )
+    private Address address;
+
     public Employee(String firstName, String lastName, String email, LocalDate hireDate, double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
