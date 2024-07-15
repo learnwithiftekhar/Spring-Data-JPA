@@ -3,6 +3,10 @@ package com.learnwithifte.SpringDataJpa;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Employee")
 @Table(
@@ -70,6 +74,13 @@ public class Employee {
     )
     private Address address;
 
+    @OneToMany(
+            mappedBy = "employee",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private Set<Task> tasks = new HashSet<>();
+
     public Employee(String firstName, String lastName, String email, LocalDate hireDate, double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -127,6 +138,20 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public void setTasks(Task task) {
+            this.tasks.add(task);
+            task.setEmployee(this);
+    }
+
+    public void removeTask(Task task) {
+            this.tasks.remove(task);
+            task.setEmployee(null);
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
     }
 
     @Override

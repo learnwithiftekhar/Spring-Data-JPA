@@ -23,20 +23,29 @@ public class SpringDataJpaApplication {
 			EmployeeRepository employeeRepository,
 			AddressRepository addressRepository) {
 		return args->{
-//			Faker faker = new Faker();
-//
-//			String firstName = faker.name().firstName();
-//			String lastName = faker.name().lastName();
-//			Employee employee = new Employee(
-//					firstName,
-//					lastName,
-//					firstName.toLowerCase()+"_"+lastName.toLowerCase()+"@learnwithiftekhar.com",
-//					LocalDate.of(
-//							faker.number().numberBetween(2018, 2024),
-//							faker.number().numberBetween(1, 12),
-//							faker.number().numberBetween(1, 28)),
-//					faker.number().randomDouble(2, 1000, 5000)
-//			);
+			Faker faker = new Faker();
+
+			String firstName = faker.name().firstName();
+			String lastName = faker.name().lastName();
+			Employee employee = new Employee(
+					firstName,
+					lastName,
+					firstName.toLowerCase()+"_"+lastName.toLowerCase()+"@learnwithiftekhar.com",
+					LocalDate.of(
+							faker.number().numberBetween(2018, 2024),
+							faker.number().numberBetween(1, 12),
+							faker.number().numberBetween(1, 28)),
+					faker.number().randomDouble(2, 1000, 5000)
+			);
+
+			employee.setTasks( new Task("Record A video"));
+			employee.setTasks(new Task("do some coding"));
+			employee.setTasks(new Task("Drink Coffee"));
+
+			employeeRepository.save(employee);
+
+
+
 //
 //			Address address = new Address(
 //					faker.address().streetAddress(),
@@ -51,12 +60,12 @@ public class SpringDataJpaApplication {
 //			addressRepository.findAll()
 //					.forEach(System.out::println);
 
-			employeeRepository.findById(206L)
-							.ifPresent(System.out::println);
-			addressRepository.findById(1L)
-					.ifPresent(System.out::println);
-
-			employeeRepository.deleteById(206L);
+//			employeeRepository.findById(206L)
+//							.ifPresent(System.out::println);
+//			addressRepository.findById(1L)
+//					.ifPresent(System.out::println);
+//
+//			employeeRepository.deleteById(206L);
 
 		};
 	}
