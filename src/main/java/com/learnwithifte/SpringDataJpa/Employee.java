@@ -3,9 +3,7 @@ package com.learnwithifte.SpringDataJpa;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Employee")
@@ -81,6 +79,22 @@ public class Employee {
     )
     private Set<Task> tasks = new HashSet<>();
 
+    @ManyToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    @JoinTable(
+            name = "employee_project",
+            joinColumns = @JoinColumn(
+                    name = "employee_id",
+                    foreignKey = @ForeignKey(name = "employee_project_employee_id_fk")
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "project_id",
+                    foreignKey = @ForeignKey(name = "employee_project_project_id_fk")
+            )
+    )
+    private Set<Project> projectList = new HashSet<>();
+
     public Employee(String firstName, String lastName, String email, LocalDate hireDate, double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -152,6 +166,16 @@ public class Employee {
 
     public Set<Task> getTasks() {
         return tasks;
+    }
+
+    public void assignProject(Project project) {
+        projectList.add(project);
+        project.getEmployees().add(this);
+    }
+
+    public void removeProject(Project project) {
+        projectList.remove(project);
+        project.getEmployees().remove(this);
     }
 
     @Override

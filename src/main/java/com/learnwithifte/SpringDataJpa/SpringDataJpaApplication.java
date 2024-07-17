@@ -42,6 +42,9 @@ public class SpringDataJpaApplication {
 			employee.setTasks(new Task("do some coding"));
 			employee.setTasks(new Task("Drink Coffee"));
 
+			employee.assignProject(new Project("Employee Management System"));
+			employee.assignProject(new Project("Payroll Management System"));
+
 			employeeRepository.save(employee);
 
 
